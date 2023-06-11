@@ -6,7 +6,8 @@
       "available_seat": 20,
       "price": 300,
       "number_of_lesson": 26,
-      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/english-R3KPS6.png"
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/english-R3KPS6.png",
+      "enrolled": 0
     },
     {
       "name": "Spanish Intermediate",
@@ -15,7 +16,8 @@
       "available_seat": 15,
       "price": 250,
       "number_of_lesson": 20,
-      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/spain.png"
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/spain.png",
+      "enrolled": 0
     },
     {
       "name": "French Conversation",
@@ -24,7 +26,8 @@
       "available_seat": 10,
       "price": 350,
       "number_of_lesson": 30,
-      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/france.png"
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/france.png",
+      "enrolled": 0
     },
     {
       "name": "German for Travelers",
@@ -33,7 +36,8 @@
       "available_seat": 12,
       "price": 280,
       "number_of_lesson": 18,
-      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
+      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png",
+      "enrolled": 0
     },
     {
       "name": "Mandarin Chinese Advanced",
@@ -42,7 +46,8 @@
       "available_seat": 8,
       "price": 400,
       "number_of_lesson": 24,
-      "country": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/255px-Flag_of_the_People%27s_Republic_of_China.svg.png"
+      "country": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/255px-Flag_of_the_People%27s_Republic_of_China.svg.png",
+      "enrolled": 0
     },
     {
       "name": "Italian Beginner",
@@ -51,7 +56,8 @@
       "available_seat": 16,
       "price": 320,
       "number_of_lesson": 22,
-      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/125px-Flag_of_Italy.svg.png"
+      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/125px-Flag_of_Italy.svg.png",
+      "enrolled": 0
     }
   ]
   
