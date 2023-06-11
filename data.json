@@ -1,0 +1,57 @@
+[
+    {
+      "name": "English For Beginner",
+      "instructor_name": "Rebecca Hill",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/woman-learning-english-online-e1625538535869-p9p4lrjtk1sd2tmdyid28uz6flhqadle7aui7qrlao.jpg",
+      "available_seat": 20,
+      "price": 300,
+      "number_of_lesson": 26,
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/english-R3KPS6.png"
+    },
+    {
+      "name": "Spanish Intermediate",
+      "instructor_name": "Carlos Ramirez",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/student-using-laptop-having-online-class-with-teacher-pov-e1625538594703-p9p4nb0ar9wa3tdtyoc1tyzdhbwdwipk2xc5j2hd3k.jpg",
+      "available_seat": 15,
+      "price": 250,
+      "number_of_lesson": 20,
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/spain.png"
+    },
+    {
+      "name": "French Conversation",
+      "instructor_name": "Marie Dubois",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/young-mixed-race-student-in-eyeglasses-and-casualwear-taking-online-course-p9f5iopml5lajaxb0pj0wyp2ylf2pdzjk797kdvi4w.jpg",
+      "available_seat": 10,
+      "price": 350,
+      "number_of_lesson": 30,
+      "country": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/2021/06/france.png"
+    },
+    {
+      "name": "German for Travelers",
+      "instructor_name": "Hans Schmidt",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/happy-arab-guy-student-learning-foreign-language-online-e1625538616107-p9p4nvoqxmol78jslx9uctrijt2gluznhrou35mpao.jpg",
+      "available_seat": 12,
+      "price": 280,
+      "number_of_lesson": 18,
+      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png"
+    },
+    {
+      "name": "Mandarin Chinese Advanced",
+      "instructor_name": "Li Wei",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/positive-black-guy-attending-online-training-from-home-p9f5llzjullenmodxz18o84phr06nhlhaoblbdjes0.jpg",
+      "available_seat": 8,
+      "price": 400,
+      "number_of_lesson": 24,
+      "country": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/255px-Flag_of_the_People%27s_Republic_of_China.svg.png"
+    },
+    {
+      "name": "Italian Beginner",
+      "instructor_name": "Giulia Rossi",
+      "image": "https://templatekit.jegtheme.com/verbalizer/wp-content/uploads/sites/117/elementor/thumbs/online-education-young-arab-guy-watching-webinar-on-laptop-and-taking-notes-e1625538610179-p9p4nq1psmgv9krziuu2xv6qzhu9bod9gzrx7hv2c0.jpg",
+      "available_seat": 16,
+      "price": 320,
+      "number_of_lesson": 22,
+      "country": "https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/125px-Flag_of_Italy.svg.png"
+    }
+  ]
+  

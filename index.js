@@ -12,10 +12,16 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+const data = require('./data.json');
+
 
 // check weather server is running
 app.get('/', (req, res) => {
     res.send('LinguaDove is Singing 🎵🎵🎵');
+})
+
+app.get('/classes', (req, res) => {
+    res.send(data);
 })
 
 app.listen(port, () => {
