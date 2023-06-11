@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const data = require('./data.json');
+const teachers = require('./teacher.json');
 
 
 // check weather server is running
@@ -22,6 +23,10 @@ app.get('/', (req, res) => {
 
 app.get('/classes', (req, res) => {
     res.send(data);
+})
+
+app.get('/teachers', (req, res) => {
+    res.send(teachers);
 })
 
 app.listen(port, () => {
