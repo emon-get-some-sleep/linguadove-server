@@ -65,6 +65,14 @@ async function run() {
         res.send(result);
       })
 
+    // get class for instrucotr
+    app.get('/classes/:email', async(req, res) => {
+        const instructorEmail = req.params.email;
+        const query = {instructor_email: instructorEmail}
+        const result = await classCollection.find(query).toArray();
+        res.send(result);
+      })
+
     // get all teacher
     app.get('/teachers', async(req, res) => {
         const result = await teacherCollection.find().toArray();
@@ -135,6 +143,7 @@ async function run() {
     // adding new class 
     app.post('/newclass', async (req, res) => {
       const newClass = req.body;
+      newClass.status="pending";
       const result = await classCollection.insertOne(newClass)
       res.send(result);
     })
