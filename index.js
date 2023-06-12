@@ -130,6 +130,15 @@ async function run() {
 
     })
 
+    // managing classes
+
+    // adding new class 
+    app.post('/newclass', async (req, res) => {
+      const newClass = req.body;
+      const result = await classCollection.insertOne(newClass)
+      res.send(result);
+    })
+
 
 
     // Send a ping to confirm a successful connection
