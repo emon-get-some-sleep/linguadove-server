@@ -107,6 +107,14 @@ async function run() {
       res.send(result);
     })
 
+    // get specific class information
+    app.get('/classinfo/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await classCollection.findOne(query);
+      res.send(result);
+    })
+
     // get all teacher
     app.get('/teachers', async(req, res) => {
         const result = await teacherCollection.find().toArray();
@@ -308,6 +316,27 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       const newClass = req.body;
       newClass.status="pending";
       const result = await classCollection.insertOne(newClass)
+      res.send(result);
+    })
+    app.patch('/newclass/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = {_id : new ObjectId(id)};
+
+      const newClass = req.body;
+      const updateDoc = {
+        $set: {
+          name: newClass.name,
+          price: newClass.price,
+          available_seat: newClass.available_seat,
+          number_of_lesson: newClass.number_of_lesson
+          
+        },
+      };
+  
+      const result = await classCollection.updateOne(filter, updateDoc);
+      
+
+      
       res.send(result);
     })
 
