@@ -90,6 +90,14 @@ async function run() {
       const result = await selectedClassCollection.find(query).toArray();
       res.send(result);
     })
+
+    // delete selected classes
+    app.delete('/selectclass/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {selectedClassId: id};
+      const result = await selectedClassCollection.deleteOne(query);
+      res.send(result);
+    })
     // get select class for payments
 
     app.get('/paymentinfo/:id', async (req, res) => {
@@ -202,6 +210,25 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       const result = await userCollection.updateOne(filter, updateDoc);
       res.send(result);
 
+    })
+
+    // check wether a user is an admin or not
+    app.get('/users/admin/:email', async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      const result = { admin: user?.role === 'admin' }
+      res.send(result);
+    })
+    // check wether a user is an instructor or not
+    app.get('/users/instructor/:email', async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      const result = { instructor: user?.role === 'instructor' }
+      res.send(result);
     })
 
     // approve a class
