@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY);
+
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const port = process.env.PORT || 5000;
@@ -49,6 +51,8 @@ async function run() {
     const classCollection = client.db('LinguaDove').collection('classCollection');
     const teacherCollection = client.db('LinguaDove').collection('teacherCollection');
     const userCollection = client.db('LinguaDove').collection('userCollection');
+    const selectedClassCollection = client.db('LinguaDove').collection('selectedClassCollection');
+    const paymentCollection = client.db('LinguaDove').collection('payments');
 
 
     app.post('/jwt', (req, res) => {
@@ -73,11 +77,67 @@ async function run() {
         res.send(result);
       })
 
+    // add  class to selected collection for specific user
+    app.post('/selectclass', async (req, res) => {
+      const newClass = req.body;
+      const result = await selectedClassCollection.insertOne(newClass);
+      res.send(result);
+    })
+    // get all the selected classes
+    app.get('/selectclass/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = {email: email};
+      const result = await selectedClassCollection.find(query).toArray();
+      res.send(result);
+    })
+    // get select class for payments
+
+    app.get('/paymentinfo/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {selectedClassId: id};
+      const result = await selectedClassCollection.findOne(query);
+      res.send(result);
+    })
+
     // get all teacher
     app.get('/teachers', async(req, res) => {
         const result = await teacherCollection.find().toArray();
         res.send(result);
       })
+
+
+      // manage payments
+
+        // create payment intent
+      app.post('/create-payment-intent',  async (req, res) => {
+       
+      const { price } = req.body;
+      const amount = parseInt(price * 100);
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: 'usd',
+        payment_method_types: ['card']
+      });
+
+      res.send({
+        clientSecret: paymentIntent.client_secret
+      })
+    })
+
+
+    // saving payment history to database
+
+      // payment related api
+  app.post('/payments', async(req, res) => {
+    const payment = req.body;
+    const result = await paymentCollection.insertOne(payment);
+
+    
+
+
+    res.send(result);
+  })
+
   
 
 
@@ -90,6 +150,8 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
+
+
 
     // create user 
     app.post('/users', async (req, res) => {
