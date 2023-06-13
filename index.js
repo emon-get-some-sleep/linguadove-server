@@ -130,17 +130,38 @@ async function run() {
       // payment related api
   app.post('/payments', async(req, res) => {
     const payment = req.body;
-    const result = await paymentCollection.insertOne(payment);
-
+    const {classId, deleteId} = payment;
+    // console.log(classId);
+    const filter = {_id : new ObjectId(classId)};
+    const filter2 = {_id: new ObjectId(deleteId)};
+    const deleteSelectedClass = await selectedClassCollection.deleteOne(filter2);
+    const classInfo = await classCollection.findOne(filter);
     
+    // console.log(classInfo);
+    const totalEnrolled = classInfo?.enrolled ? classInfo.enrolled + 1 : 1;
+    const availableSeat = classInfo.available_seat - 1;
+    const updateDoc = {
+      $set: {
+        enrolled: totalEnrolled,
+        available_seat: availableSeat
+      },
+    };
 
-
+    const updateClass = await classCollection.updateOne(filter, updateDoc);
+    const result = await paymentCollection.insertOne(payment);
     res.send(result);
   })
 
   
 
+// enrolled classes
 
+app.get('/enrolledclasses/:email', async(req, res) => {
+  const email = req.params.email;
+  const query = {email : email};
+  const result = await paymentCollection.find(query).toArray();
+  res.send(result);
+})
 
 
     // users management
