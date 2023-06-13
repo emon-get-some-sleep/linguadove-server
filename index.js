@@ -208,6 +208,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       };
 
       const result = await userCollection.updateOne(filter, updateDoc);
+      
       res.send(result);
 
     })
@@ -228,6 +229,8 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       const query = { email: email }
       const user = await userCollection.findOne(query);
       const result = { instructor: user?.role === 'instructor' }
+      
+
       res.send(result);
     })
 
@@ -239,6 +242,22 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       const updateDoc = {
         $set: {
           status: 'approved'
+        },
+      };
+
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+
+    })
+    // feedback for class from admin
+    app.patch('/class/admin/feedback/:id', async (req, res) => {
+      const id = req.params.id;
+      const {feedback} = req.body;
+      // console.log(id, feedback);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          feedback: feedback
         },
       };
 
@@ -275,6 +294,9 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       };
 
       const result = await userCollection.updateOne(filter, updateDoc);
+      const getUser = await userCollection.findOne(filter);
+      console.log(getUser);
+      const addedToTeacher = await teacherCollection.insertOne(getUser);
       res.send(result);
 
     })
