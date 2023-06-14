@@ -54,6 +54,24 @@ async function run() {
     const selectedClassCollection = client.db('LinguaDove').collection('selectedClassCollection');
     const paymentCollection = client.db('LinguaDove').collection('payments');
 
+    // verify json web token
+
+    const verifyJWT = (req, res, next) => {
+      const authorization = req.headers.authorization;
+      if (!authorization) {
+        return res.status(401).send({ error: true, message: 'unauthorized access' });
+      }
+      // bearer token
+      const token = authorization.split(' ')[1];
+    
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          return res.status(401).send({ error: true, message: 'unauthorized access' })
+        }
+        req.decoded = decoded;
+        next();
+      })
+    }
 
     app.post('/jwt', (req, res) => {
       const user = req.body;
@@ -62,6 +80,26 @@ async function run() {
       res.send({ token })
     })
 
+    // verify admin 
+    const verifyAdmin = async (req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      if (user?.role !== 'admin') {
+        return res.status(403).send({ error: true, message: 'forbidden message' });
+      }
+      next();
+    }
+    // verify Instructor
+    const verifyInstructor = async (req, res, next) => {
+      const email = req.decoded.email;
+      const query = { email: email }
+      const user = await userCollection.findOne(query);
+      if (user?.role !== 'instructor') {
+        return res.status(403).send({ error: true, message: 'forbidden message' });
+      }
+      next();
+    }
 
     // get all classes
     app.get('/classes', async(req, res) => {
@@ -70,21 +108,22 @@ async function run() {
       })
 
     // get class for instrucotr
-    app.get('/classes/:email', async(req, res) => {
+    app.get('/classes/:email', verifyJWT, verifyInstructor, async(req, res) => {
         const instructorEmail = req.params.email;
         const query = {instructor_email: instructorEmail}
         const result = await classCollection.find(query).toArray();
+        // console.log('working');
         res.send(result);
       })
 
     // add  class to selected collection for specific user
-    app.post('/selectclass', async (req, res) => {
+    app.post('/selectclass', verifyJWT, async (req, res) => {
       const newClass = req.body;
       const result = await selectedClassCollection.insertOne(newClass);
       res.send(result);
     })
     // get all the selected classes
-    app.get('/selectclass/:email', async (req, res) => {
+    app.get('/selectclass/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
       const query = {email: email};
       const result = await selectedClassCollection.find(query).toArray();
@@ -92,7 +131,7 @@ async function run() {
     })
 
     // delete selected classes
-    app.delete('/selectclass/:id', async (req, res) => {
+    app.delete('/selectclass/:id', verifyJWT, async (req, res) => {
       const id = req.params.id;
       const query = {selectedClassId: id};
       const result = await selectedClassCollection.deleteOne(query);
@@ -125,7 +164,7 @@ async function run() {
       // manage payments
 
         // create payment intent
-      app.post('/create-payment-intent',  async (req, res) => {
+      app.post('/create-payment-intent', verifyJWT,  async (req, res) => {
        
       const { price } = req.body;
       const amount = parseInt(price * 100);
@@ -172,10 +211,11 @@ async function run() {
 
 // enrolled classes
 
-app.get('/enrolledclasses/:email', async(req, res) => {
+app.get('/enrolledclasses/:email', verifyJWT, async(req, res) => {
   const email = req.params.email;
   const query = {email : email};
   const result = await paymentCollection.find(query).toArray();
+  // console.log('working');
   res.send(result);
 })
 
@@ -183,8 +223,9 @@ app.get('/enrolledclasses/:email', async(req, res) => {
     // users management
     // get users 
      // users related apis
-     app.get('/users',  async (req, res) => {
+     app.get('/users', verifyJWT, verifyAdmin,  async (req, res) => {
       const result = await userCollection.find().toArray();
+      // console.log('working');
       res.send(result);
     });
 
@@ -205,7 +246,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
     });
 
     // promote user to admin
-    app.patch('/users/admin/:id', async (req, res) => {
+    app.patch('/users/admin/:id', verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       // console.log(id);
       const filter = { _id: new ObjectId(id) };
@@ -222,7 +263,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
     })
 
     // check wether a user is an admin or not
-    app.get('/users/admin/:email', async (req, res) => {
+    app.get('/users/admin/:email', verifyJWT, verifyAdmin, async (req, res) => {
       const email = req.params.email;
 
       const query = { email: email }
@@ -231,7 +272,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       res.send(result);
     })
     // check wether a user is an instructor or not
-    app.get('/users/instructor/:email', async (req, res) => {
+    app.get('/users/instructor/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
 
       const query = { email: email }
@@ -243,7 +284,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
     })
 
     // approve a class
-    app.patch('/class/admin/approve/:id', async (req, res) => {
+    app.patch('/class/admin/approve/:id', verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       // console.log(id);
       const filter = { _id: new ObjectId(id) };
@@ -258,7 +299,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
 
     })
     // feedback for class from admin
-    app.patch('/class/admin/feedback/:id', async (req, res) => {
+    app.patch('/class/admin/feedback/:id', verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       const {feedback} = req.body;
       // console.log(id, feedback);
@@ -273,8 +314,8 @@ app.get('/enrolledclasses/:email', async(req, res) => {
       res.send(result);
 
     })
-    // approve a class
-    app.patch('/class/admin/deny/:id', async (req, res) => {
+    // deny a class
+    app.patch('/class/admin/deny/:id', verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       // console.log(id);
       const filter = { _id: new ObjectId(id) };
@@ -291,7 +332,7 @@ app.get('/enrolledclasses/:email', async(req, res) => {
 
 
     // promote user to instructor
-    app.patch('/users/instructor/:id', async (req, res) => {
+    app.patch('/users/instructor/:id', verifyJWT, verifyAdmin, async (req, res) => {
       const id = req.params.id;
       // console.log(id);
       const filter = { _id: new ObjectId(id) };
@@ -312,13 +353,13 @@ app.get('/enrolledclasses/:email', async(req, res) => {
     // managing classes
 
     // adding new class 
-    app.post('/newclass', async (req, res) => {
+    app.post('/newclass', verifyJWT, verifyInstructor, async (req, res) => {
       const newClass = req.body;
       newClass.status="pending";
       const result = await classCollection.insertOne(newClass)
       res.send(result);
     })
-    app.patch('/newclass/:id', async (req, res) => {
+    app.patch('/newclass/:id', verifyJWT, verifyInstructor, async (req, res) => {
       const id = req.params.id;
       const filter = {_id : new ObjectId(id)};
 
