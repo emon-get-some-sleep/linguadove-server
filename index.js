@@ -65,7 +65,7 @@ async function run() {
 
     // get all classes
     app.get('/classes', async(req, res) => {
-        const result = await classCollection.find().toArray();
+        const result = await classCollection.find().sort({enrolled: -1}).toArray();
         res.send(result);
       })
 
